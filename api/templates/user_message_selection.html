@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}user_message_selection{% endblock %}
+
+{% block content %}
+    <h1 id="title">Select User to message</h1>
+    <form action="{{ url_for('message') }}"  method="get">
+        <input type="search" class="Search-bar" id="user" name="user_name" placeholder="Message User by Username" />
+
+    {% if users %}
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>User name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in users %}
+                <tr class="clickable-row" data-href="{{ url_for('message', user_name=row.Username) }}">
+                    <td>{{ row.UserID }}</td>
+                    <td>{{ row.Username }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No users messaged previously</p>
+    {% endif %}
+{% endblock %}

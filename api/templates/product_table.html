@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+    <h1>Results</h1>
+    <form class="Filters" action="{{ url_for('search_product') }}" method="get">
+        <input type="hidden" name="search" placeholder="Search" value="{{ request.args.get('search', '') }}" />
+        
+        <div class="dropdown">
+            <select name="category_id">
+                <option value="">Select Category</option>
+                {% for category in categories %}
+                    <option value="{{ category.CategoryID }}" {% if request.args.get('category_id') == category.CategoryID|string %}selected{% endif %}>
+                        {{ category.CategoryName }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <input type="hidden" step="1" name="seller_id"  value="{{ request.args.get('seller_id', '') }}">
+        <input type="number" step="1" name="min_price" placeholder="Min Price" value="{{ request.args.get('min_price', '') }}">
+        <input type="number" step="1" name="max_price" placeholder="Max Price" value="{{ request.args.get('max_price', '') }}">
+        <button class="btn" type="submit">Apply Filters</button>
+    </form>
+    
+    
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>StockQuantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+                <tr class="clickable-row" data-href="{{ url_for('product_detail', product_id=row.ProductID, search_query=search_query) }}">
+                    <td>{{ row.ProductName }}</td>
+                    <td>{{ row.Description }}</td>
+                    <td>{{ row.Price }}</td>
+                    <td>{{ row.StockQuantity }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

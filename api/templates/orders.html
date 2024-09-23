@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Order Details{% endblock %}
+
+{% block content %}
+    <h1 class="title">Orders</h1>
+    <div class="orders-list">
+        {% if orders %}
+            {% for order in orders %}
+                <div class="order-item">
+                    <h2>Order #{{ order.OrderID }}</h2>
+                    <p>Date: {{ order.OrderDate }}</p>
+                    <p>Total: ${{ order.TotalAmount }}</p>
+                    <br>
+                    <a href="{{ url_for('order_details', order_id=order.OrderID) }}" class="btn">View Details</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>You have no orders.</p>
+        {% endif %}
+    </div>
+{% endblock %}

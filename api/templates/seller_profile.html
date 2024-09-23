@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Store of {{ seller.Username }}{% endblock %}
+
+{% block content %}
+    <div class="seller-profile-container">
+        <h1>Store of {{ seller.FirstName}} {{seller.LastName}}</h1>
+        <p class="description">{{ seller.Description }}</p>
+
+        <div class="button-container">
+            {% if not is_subscribed %}
+                <form action="{{ url_for('subscribe', seller_id=seller.SellerID) }}" method="post">
+                    <button type="submit" class="btn">Subscribe</button>
+                </form>
+            {% else %}
+                <form action="{{ url_for('unsubscribe', seller_id=seller.SellerID) }}" method="post">
+                    <button type="submit" class="red-btn">Unsubscribe</button>
+                </form>
+            {% endif %}
+        </div>
+
+        <h2>Products</h2>
+        <div class="product-filters">
+            <form class="Filters" action="{{ url_for('search_product') }}" method="get">
+                <input type="hidden" name="search" placeholder="Search" value="{{ request.args.get('search', '') }}" />
+
+                <div class="dropdown">
+                    <select name="category_id">
+                        <option value="">Select Category</option>
+                        {% for category in categories %}
+                            <option value="{{ category.CategoryID }}" {% if request.args.get('category_id') == category.CategoryID|string %}selected{% endif %}>
+                                {{ category.CategoryName }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input type="hidden" name="seller_id" value="{{ seller.SellerID }}">
+                <input type="number" step="1" name="min_price" placeholder="Min Price" value="{{ request.args.get('min_price', '') }}">
+                <input type="number" step="1" name="max_price" placeholder="Max Price" value="{{ request.args.get('max_price', '') }}">
+                <button class="btn" type="submit">Apply Filters</button>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Stock Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in seller_products %}
+                    <tr class="clickable-row" data-href="{{ url_for('product_detail', product_id=product.ProductID) }}">
+                        <td>{{ product.ProductName }}</td>
+                        <td>{{ product.Description }}</td>
+                        <td>{{ product.Price }}</td>
+                        <td>{{ product.StockQuantity }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

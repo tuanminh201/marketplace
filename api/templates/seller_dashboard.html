@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Seller Dashboard{% endblock %}
+
+{% block content %}
+<h1>Manage Your Products</h1>
+
+<p>Here you can add new products, update existing ones, or remove them from the store.</p>
+
+<a href="{{ url_for('add_product') }}" class="btn">Add New Product</a>
+
+<h2>Your Products</h2>
+<table  class="product-seller">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.ProductName }}<br></td>
+            <td>{{ product.Description }}<br></td>
+            <td>{{ product.Price }}<br></td>
+            <td>{{ product.StockQuantity }}<br></td>
+            <td>
+                <a href="{{ url_for('edit_product', product_id=product.ProductID) }}" class="btn">Edit</a>
+                <a href="{{ url_for('delete_product', product_id=product.ProductID) }}" class="red-btn" onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Your Orders</h2>
+<form method="POST" action="{{ url_for('update_order_status_bulk') }}">
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.OrderID }}</td>
+                <td>{{ order.OrderDate }}</td>
+                <td>{{ order.TotalAmount }}</td>
+                <td>
+                <div class="dropdown">
+                    <select name="order_status_{{ order.OrderID }}">
+                        <option value="Pending" {% if order.OrderStatus == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="Shipped" {% if order.OrderStatus == 'Shipped' %}selected{% endif %}>Shipped</option>
+                        <option value="Delivered" {% if order.OrderStatus == 'Delivered' %}selected{% endif %}>Delivered</option>
+                        <option value="Cancelled" {% if order.OrderStatus == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                    </select>
+                </div>
+                </td>
+                <td>
+                    <button type="submit" class="btn">Update Status</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</form>
+<h2>Your Statistics</h2>
+<ul class="seller-stats">
+    <li><span class="category">Total Products Sold:</span> <span class="value">{{ total_products_sold[0]['TotalProductsSold'] }}</span></li>
+    <li><span class="category">Total Revenue:</span> <span class="value">${{ total_revenue[0]['TotalRevenue'] }}</span></li>
+    <li><span class="category">Total Orders:</span> <span class="value">{{ total_orders[0]['TotalOrders'] }}</span></li>
+    <li><span class="category">Average Order Price:</span> <span class="value">${{ average_order_price[0]['AverageOrderPrice'] }}</span></li>
+    <li><span class="category">Total Distinct Products Sold:</span> <span class="value">{{ total_distinct_products_sold[0]['TotalDistinctProductsSold'] }}</span></li>
+    <li><span class="category">Most Sold Product:</span> <span class="value">{{ most_sold_product[0]['ProductName'] }} ({{ most_sold_product[0]['TotalQuantitySold'] }} sold)</span></li>
+    <li><span class="category">Highest Revenue Product:</span> <span class="value">{{ highest_revenue_product[0]['ProductName'] }} (${{ highest_revenue_product[0]['TotalRevenueGenerated'] }})</span></li>
+    <li><span class="category">Average Product Rating:</span> <span class="value">{{ average_product_rating[0]['AverageProductRating'] }}</span></li>
+    <li><span class="category">Total Reviews Received:</span> <span class="value">{{ total_reviews_received[0]['TotalReviewsReceived'] }}</span></li>
+</ul>
+
+
+<h3>Total Quantity Sold per Product</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Total Quantity Sold</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in total_quantity_sold_per_product %}
+        <tr>
+            <td>{{ product.ProductName }}</td>
+            <td>{{ product.TotalQuantitySold }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

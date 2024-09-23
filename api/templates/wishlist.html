@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Your Wishlist{% endblock %}
+
+{% block content %}
+    <h1 class="title">Your Wishlist</h1>
+    <div>
+        {% if items %}
+            {% for item in items %}
+                <div class="order-item">
+                    <h2>{{ item.ProductName }}</h2>
+                    <p>Description: {{ item.Description }}</p>
+                    <p>Price: ${{ item.Price }}</p>
+                    <a href="{{ url_for('product_detail', product_id=item.ProductID, wishlist=True) }}" class="btn">View Product</a>
+                    <form action="{{ url_for('remove_from_wishlist', product_id=item.ProductID) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="red-btn">Remove</button>
+                    </form>
+                </div>
+                <br>
+            {% endfor %}
+        {% else %}
+            <p>Your wishlist is empty.</p>
+        {% endif %}
+    </div>
+{% endblock %}

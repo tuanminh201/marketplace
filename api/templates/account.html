@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Account{% endblock %}
+
+
+{% block content %}
+    <h1 class="title">Profile</h1>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="{{ url_for('static', filename='img/profile.png') }}" alt="Profile Picture" class="profile-pic">
+            <h2>{{ data.FirstName }} {{ data.LastName }}</h2>
+            <p>{{ data.Email }}</p>
+        </div>
+
+        <div class="profile-details">
+            <h3>Account Details</h3>
+            <ul>
+                <li><strong>Username:</strong> {{ data.Username }} </li>
+                <li><strong>Joined:</strong> N/a </li>
+                <li><strong>Phone:</strong> {{ data.PhoneNumber }} </li>
+                <li><strong>Address:</strong> {{ data.Address }} </li>
+            </ul>
+        </div>
+
+        <div class="profile-actions">
+            <a href="{{ url_for('edit_profile') }}" class="btn">Edit Profile</a>
+            <a href="{{ url_for('become_seller') }}" class="btn">Become Seller</a>
+            <a href="{{ url_for('logout') }}" class="red-btn">Logout</a>
+        </div>
+
+        <div class="profile-subscriptions">
+            <h3>My Subscriptions</h3>
+            {% if subscriptions %}
+                <ul>
+                    {% for subscription in subscriptions %}
+                    <li>
+                        {{ subscription.Username }} - Subscribed on {{ subscription.SubscriptionDate.strftime('%Y-%m-%d') }} 
+                        <form action="{{ url_for('unsubscribe', seller_id=subscription.SellerID) }}" method="post" style="display:inline;">
+                            <button type="submit" class="red-btn">Unsubscribe</button>
+                        </form>
+                        <a href="{{ url_for('seller_profile', seller_id=subscription.SellerID) }}" class="btn">Go to Store</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>You are not subscribed to any sellers.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Shopping-Cart{% endblock %}
+
+{% block content %}
+    <h1 id="title">Shopping Cart</h1>
+    {% if data %}
+    <table>
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Individual Price</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+                <tr class="clickable-row" data-href="{{ url_for('product_detail', product_id=row.ProductID, search_query=search_query) }}">
+                    <td>{{ row.ProductID }}</td>
+                    <td>{{ row.ProductName }}</td>
+                    <td>{{ row.Price }}</td>
+                    <td>{{ row.Amount }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form action="{{ url_for('checkout') }}" method="post">
+        <input type="hidden" name="cart_data" value="{{ data }}">
+        <button type="submit" class="green-btn">Checkout</button>
+    </form>
+    {% else %}
+    <p>Your shopping cart is empty</p>
+    {% endif %}
+{% endblock %}

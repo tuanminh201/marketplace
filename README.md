@@ -1,2 +1,10 @@
-# Marketplace
-This project is an e-commerce platform built with Python (Flask) and MySQL. Users can browse and purchase products, as well as manage wishlists, while sellers can manage their products and orders.  The platform includes features like user account management, product listings, order processing, and RESTful APIs for interacting with the database.
+# Database Lab group J
+Run the sql files create_tables, sample_data and features in this order in a mariadb database.
+
+The connection Details are set in api/database_handler.py.
+
+Run api/app.py after setting up mariadb and executing the sql files to start the application.
+
+## Documentation
+Functional requirements and the ER Diagram used in this project can be found in
+documentation_diagram.tar.gz

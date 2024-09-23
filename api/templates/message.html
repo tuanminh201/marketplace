@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}message{% endblock %}
+
+{% block content %}
+    <h1>Conversation with {{ other_username }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>YOU</th>
+                <th>{{ other_username }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in messages %}
+            {% if other_userid == row.SenderID %}
+                <tr>
+                    <td>{{ row.SentDate }}</td>
+                    <td></td>
+                    <td>{{ row.MessageContent }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{ row.SentDate }}</td>
+                    <td>{{ row.MessageContent }}</td>
+                    <td></td>
+                </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="message-box">
+        <form action="/message" method="post">
+            <textarea name="message" rows="4" placeholder="Type your message here..." required></textarea>
+            <input type="hidden" name="receiver_id", value="{{ other_userid }}"/>
+            <input type="hidden" name="receiver_name", value="{{ other_username }}"/>
+            <button  class="btn" type="submit">Send Message</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Order Details{% endblock %}
+
+{% block content %}
+    <div class="order-item">
+        <h1 class="title">Order #{{ order.OrderID }}</h1>
+        <p>Date: {{ order.OrderDate }}</p>
+        <p>Total: ${{ order.TotalAmount }}</p>
+        <p>Status: {{ order.OrderStatus }}</p>
+
+        <h2>Items in this order:</h2>
+        {% for item in items %}
+        <a href="{{ url_for('product_detail', product_id=item.ProductID, order=item.OrderID) }}">
+            <div class="order-items">
+                <h3>{{ item.ProductName }}</h3>
+                <p>Price: ${{ item.Price }}</p>
+                <p>Description: {{ item.Description }}</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    <br>
+    <a href="{{ url_for('orders') }}" class="btn" >Back to Orders</a>
+{% endblock %}
