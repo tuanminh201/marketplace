@@ -26,7 +26,7 @@ Run api/app.py after setting up mariadb and executing the sql files to start the
 
 ![image](https://github.com/user-attachments/assets/42468d18-8b1e-4188-8775-ffc2722aeed4)
 
--Add to shopping cart or wishlist
+-Add to shopping cart and wishlist
 ![image](https://github.com/user-attachments/assets/d5ce9468-7d26-4f8e-b235-1fb122714b6f)
 
 -Add a review
